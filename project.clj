@@ -1,4 +1,4 @@
-(defproject ring-ttl-session "0.1.0-SNAPSHOT"
+(defproject ring-ttl-session "0.1.0"
   :description "Provides an implementation of an in-memory ring's SessionStore with
                TTL."
   :url "https://github.com/boechat107/ring-ttl-session"
