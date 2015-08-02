@@ -2,8 +2,6 @@
   (:require [clojure.core.cache :refer [ttl-cache-factory]]
             [ring.middleware.session.store :refer [SessionStore]]))
 
-(set! *warn-on-reflection* true)
-
 (deftype TTLMemoryStore [cache-atom]
   SessionStore
   (read-session [_ k]
