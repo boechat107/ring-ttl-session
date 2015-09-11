@@ -25,6 +25,30 @@
     (quick-bench (read-session ttl "nonexistent"))
     (quick-bench (read-session mem "nonexistent"))))
 
+(defn check-session-read []
+  ;; Results:
+  ;; 
+  ;; Evaluation count : 260016 in 6 samples of 43336 calls.
+  ;; Execution time mean : 2.301301 µs
+  ;; Execution time std-deviation : 61.142398 ns
+  ;; Execution time lower quantile : 2.210768 µs ( 2.5%)
+  ;; Execution time upper quantile : 2.368702 µs (97.5%)
+  ;; Overhead used : 13.799339 ns
+  ;; 
+  ;; Evaluation count : 8550792 in 6 samples of 1425132 calls.
+  ;; Execution time mean : 57.984783 ns
+  ;; Execution time std-deviation : 0.741526 ns
+  ;; Execution time lower quantile : 56.573950 ns ( 2.5%)
+  ;; Execution time upper quantile : 58.594382 ns (97.5%)
+  ;; Overhead used : 13.799339 ns
+  (let [ttl (ttl-memory-store 10)
+        mem (memory-store)
+        data {:foo "bar"}
+        ttl-key (write-session ttl nil data)
+        mem-key (write-session mem nil data)]
+    (quick-bench (read-session ttl ttl-key))
+    (quick-bench (read-session mem mem-key))))
+
 (defn check-session-create []
   ;; Results:
   ;; 
