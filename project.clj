@@ -6,7 +6,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0-RC1"]
                  [ring/ring-core "1.4.0"]
-                 [org.clojure/core.cache "0.6.4"]]
+                 [org.clojure/core.cache "0.6.4"]
+                 [expiring-map "0.1.4"]]
   :profiles
   {:dev
    {:global-vars {*warn-on-reflection* true}}})
