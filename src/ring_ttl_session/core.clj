@@ -38,6 +38,7 @@
   By default, the returned session store is based on expiring-map. If the optional
   key :core-cache is given, a session stored based on core.cache is returned."
   [ttl & [opt]]
-  (if (= opt :core-cache)
-    (TTLMemoryStore. (atom (ttl-cache-factory {} :ttl (* 1000 ttl))))
-    (ExpiringMapStore. (em/expiring-map ttl {:expiration-policy :access}))))
+  (condp = opt
+    :core-cache (TTLMemoryStore. (atom (ttl-cache-factory {} :ttl (* 1000 ttl))))
+    nil (ExpiringMapStore. (em/expiring-map ttl {:expiration-policy :access}))
+    (throw (Exception. "Unknown implementation option"))))
