@@ -3,8 +3,9 @@
 A session storage that stores session data in-memory with a time-to-live (TTL).
 It's very similar to 
 [ring.middleware.session.memory](https://github.com/ring-clojure/ring/wiki/Sessions),
-but it uses [core.cache](https://github.com/clojure/core.cache) instead of a
-Clojure's native map.
+but it may use [expiring-map](https://github.com/yogthos/expiring-map)
+(default) or [core.cache](https://github.com/clojure/core.cache) instead of
+a Clojure's native map.
 
 ## Installation
 
@@ -21,11 +22,20 @@ is minimal.
          '[ring-ttl-session.core :refer [ttl-memory-store]])
 
 (def app
+  ;; Using the default implementation, expiring-map.
   (wrap-session handler {:store (ttl-memory-store (* 60 30))}))
+
+;; Using core.cache
+;; (ttl-memory-store (* 60 30) :core-cache)
 ```
 
 The argument of `ttl-memory-store` is the expiration time given in seconds
-(the example's session expires in 30 minutes).
+(the example's session expires in 30 minutes). At least for now, it's
+recommended to use the default implementation (expiring-map) because of it's
+low performance overhead when compared with the bare in-memory session store 
+(check the [`ring-ttl-session.performance` namespace](https://github.com/boechat107/ring-ttl-session/blob/develop/test/ring_ttl_session/performance.clj)
+or [this issue](https://github.com/boechat107/ring-ttl-session/issues/2)
+for details).
 
 ## License
 
