@@ -13,7 +13,14 @@
   ;; Execution time lower quantile : 270.910014 ns ( 2.5%)
   ;; Execution time upper quantile : 282.034356 ns (97.5%)
   ;; Overhead used : 13.799339 ns
-
+  ;;
+  ;; Evaluation count : 5589810 in 6 samples of 931635 calls.
+  ;; Execution time mean : 93.623073 ns
+  ;; Execution time std-deviation : 2.612610 ns
+  ;; Execution time lower quantile : 91.735511 ns ( 2.5%)
+  ;; Execution time upper quantile : 97.604247 ns (97.5%)
+  ;; Overhead used : 13.715227 ns
+  ;;
   ;; Evaluation count : 10700184 in 6 samples of 1783364 calls.
   ;; Execution time mean : 44.712275 ns
   ;; Execution time std-deviation : 2.904135 ns
@@ -21,7 +28,9 @@
   ;; Execution time upper quantile : 49.585376 ns (97.5%)
   ;; Overhead used : 13.799339 ns 
   (let [ttl (ttl-memory-store 10)
+        ttl-cache (ttl-memory-store 10 :core-cache)
         mem (memory-store)]
+    (quick-bench (read-session ttl-cache "nonexistent"))
     (quick-bench (read-session ttl "nonexistent"))
     (quick-bench (read-session mem "nonexistent"))))
 
@@ -34,6 +43,13 @@
   ;; Execution time lower quantile : 2.210768 µs ( 2.5%)
   ;; Execution time upper quantile : 2.368702 µs (97.5%)
   ;; Overhead used : 13.799339 ns
+  ;;
+  ;; Evaluation count : 5931414 in 6 samples of 988569 calls.
+  ;; Execution time mean : 90.640253 ns
+  ;; Execution time std-deviation : 1.587921 ns
+  ;; Execution time lower quantile : 88.440626 ns ( 2.5%)
+  ;; Execution time upper quantile : 92.295065 ns (97.5%)
+  ;; Overhead used : 13.715227 ns
   ;; 
   ;; Evaluation count : 8550792 in 6 samples of 1425132 calls.
   ;; Execution time mean : 57.984783 ns
@@ -42,10 +58,13 @@
   ;; Execution time upper quantile : 58.594382 ns (97.5%)
   ;; Overhead used : 13.799339 ns
   (let [ttl (ttl-memory-store 10)
+        ttl-cache (ttl-memory-store 10 :core-cache)
         mem (memory-store)
         data {:foo "bar"}
         ttl-key (write-session ttl nil data)
+        ttl-cache-key (write-session ttl-cache nil data)
         mem-key (write-session mem nil data)]
+    (quick-bench (read-session ttl-cache ttl-cache-key))
     (quick-bench (read-session ttl ttl-key))
     (quick-bench (read-session mem mem-key))))
 
@@ -58,7 +77,14 @@
   ;; Execution time lower quantile : 1.690888 ms ( 2.5%)
   ;; Execution time upper quantile : 1.799542 ms (97.5%)
   ;; Overhead used : 13.799339 ns
-
+  ;;  
+  ;; Evaluation count : 136200 in 6 samples of 22700 calls.
+  ;; Execution time mean : 4.431378 µs
+  ;; Execution time std-deviation : 82.998139 ns
+  ;; Execution time lower quantile : 4.323803 µs ( 2.5%)
+  ;; Execution time upper quantile : 4.521867 µs (97.5%)
+  ;; Overhead used : 13.715227 ns
+  ;; 
   ;; Evaluation count : 104730 in 6 samples of 17455 calls.
   ;; Execution time mean : 5.809839 µs
   ;; Execution time std-deviation : 64.649296 ns
@@ -66,7 +92,9 @@
   ;; Execution time upper quantile : 5.892600 µs (97.5%)
   ;; Overhead used : 13.799339 ns
   (let [ttl (ttl-memory-store 10)
+        ttl-cache (ttl-memory-store 10 :core-cache)
         mem (memory-store)
         data {:foo "bar"}]
+    (quick-bench (write-session ttl-cache nil data))
     (quick-bench (write-session ttl nil data))
     (quick-bench (write-session mem nil data))))
