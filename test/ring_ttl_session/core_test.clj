@@ -3,12 +3,14 @@
             [ring.middleware.session.store :refer :all]
             [ring-ttl-session.core :refer :all]))
 
-(deftest memory-session-read-not-exist
-  (let [store (ttl-memory-store 1)]
+(defn read-not-exist
+  [store-opt]
+  (let [store (ttl-memory-store 1 store-opt)]
     (is (nil? (read-session store "non-existent")))))
 
-(deftest memory-session-create
-  (let [store (ttl-memory-store 2)
+(defn create-session
+  [store-opt]
+  (let [store (ttl-memory-store 2 store-opt)
         skey (write-session store nil {:ani "dog"})]
     (is (not (nil? skey)))
     (is (= {:ani "dog"}
@@ -24,8 +26,9 @@
       (Thread/sleep (* 2.5 1000))
       (is (nil? (read-session store skey))))))
 
-(deftest memory-session-update
-  (let [store (ttl-memory-store 2)
+(defn update-session
+  [store-opt]
+  (let [store (ttl-memory-store 2 store-opt)
         skey (write-session store nil {:veg "tree"})
         skey* (write-session store skey {:veg "leaf"})]
     (is (= skey skey*))
@@ -34,8 +37,33 @@
     (Thread/sleep (* 2.5 1000))
     (is (nil? (read-session store skey)))))
 
-(deftest memory-session-delete
-  (let [store (ttl-memory-store 1)
+(defn del-session
+  [store-opt]
+  (let [store (ttl-memory-store 1 store-opt)
         skey (write-session store nil {:min "salt"})]
     (is (nil? (delete-session store skey)))
     (is (nil? (read-session store skey)))))
+
+(deftest default-read-not-exit
+  (read-not-exist nil))
+
+(deftest core-cache-read-not-exit
+  (read-not-exist :core-cache))
+
+(deftest default-session-creation
+  (create-session nil))
+
+(deftest core-cache-session-creation
+  (create-session :core-cache))
+
+(deftest default-session-update
+  (update-session nil))
+
+(deftest core-cache-session-update
+  (update-session :core-cache))
+
+(deftest default-session-delete
+  (del-session nil))
+
+(deftest core-cache-session-delete
+  (del-session :core-cache))
