@@ -37,6 +37,18 @@ low performance overhead when compared with the bare in-memory session store
 or [this issue](https://github.com/boechat107/ring-ttl-session/issues/2)
 for details).
 
+### Listeners
+
+Another interesting feature of `expiring-map`, the default implementation, is
+the support for listeners.
+
+```clojure
+(ttl-memory-store (* 60 30) {:listeners [(fn [k v] (println k v))]})
+```
+
+Other supported features and options can be checked in the 
+[project's page](https://github.com/yogthos/expiring-map).
+
 ## License
 
 Copyright © 2015 Andre Boechat
