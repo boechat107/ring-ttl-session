@@ -8,6 +8,6 @@
                  [ring/ring-core "1.4.0"]
                  [org.clojure/core.cache "0.6.4"]
                  [expiring-map "0.1.6"]]
-  :profiles
-  {:dev
-   {:global-vars {*warn-on-reflection* true}}})
+  :profiles {:dev {:global-vars {*warn-on-reflection* true}}}
+  :aliases {"test" ["test" ":only" "ring-ttl-session.core-test"]}
+  )
