@@ -1,5 +1,7 @@
 # ring-ttl-session
 
+![travis-status](https://travis-ci.org/boechat107/ring-ttl-session.svg)
+
 A session storage that stores session data in-memory with a time-to-live (TTL).
 It's very similar to 
 [ring.middleware.session.memory](https://github.com/ring-clojure/ring/wiki/Sessions),
